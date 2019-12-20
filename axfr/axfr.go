@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/miekg/dns"
+	"github.com/mistletoChao/dns"
 )
 
 const (
