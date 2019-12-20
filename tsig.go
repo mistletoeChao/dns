@@ -12,8 +12,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/tjfoc/gmsm/sm3"
 )
 
 // HMAC hashing codes. These are transmitted as domain names.
@@ -105,7 +103,7 @@ func TsigPrepare(keyName, secret, alg, requestMAC string) (hash.Hash, error) {
 	case HmacSHA512:
 		h = hmac.New(sha512.New, []byte(rawsecret))
 	case HmacSM3:
-		h = hmac.New(sm3.New, []byte(rawsecret))
+		h = hmac.New(Sm3New, []byte(rawsecret))
 	default:
 		return nil, ErrKeyAlg
 	}
@@ -164,7 +162,7 @@ func TsigGenerate(m *Msg, secret, requestMAC string, timersOnly bool) ([]byte, s
 	case HmacSHA512:
 		h = hmac.New(sha512.New, []byte(rawsecret))
 	case HmacSM3:
-		h = hmac.New(sm3.New, []byte(rawsecret))
+		h = hmac.New(Sm3New, []byte(rawsecret))
 	default:
 		return nil, "", ErrKeyAlg
 	}
@@ -247,7 +245,7 @@ func TsigVerify(msg []byte, secret, requestMAC string, timersOnly bool, h hash.H
 		case HmacSHA512:
 			h = hmac.New(sha512.New, rawsecret)
 		case HmacSM3:
-			h = hmac.New(sm3.New, rawsecret)
+			h = hmac.New(Sm3New, rawsecret)
 		default:
 			return ErrKeyAlg
 		}
